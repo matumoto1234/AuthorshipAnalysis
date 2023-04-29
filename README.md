@@ -11,3 +11,7 @@ Team I
 5. create "/content/drive/MyDrive/Colab Notebooks/" directory in your google drive
 6. Create "blogtext.csv" file in it
 7. You execute all code and you get the result
+
+## License
+
+AuthorshipAnalysis by matumoto1234 is licensed under the Apache License, Version2.0
