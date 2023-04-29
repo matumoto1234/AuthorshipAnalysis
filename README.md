@@ -14,4 +14,4 @@ Team I
 
 ## License
 
-AuthoshipAnalysis by matumoto1234 is licensed under the Apache License, Version2.0
+AuthorshipAnalysis by matumoto1234 is licensed under the Apache License, Version2.0
