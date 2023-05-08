@@ -1,0 +1,124 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPYXiLlMvLFVCdbVJxPBh11",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/matumoto1234/AuthorshipAnalysis/blob/main/isCoordinateAdjective\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 55,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "70KiMGWJJebs",
+        "outputId": "7dc66218-c4ca-4781-d359-b93a4fa71ae8"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Package punkt is already up-to-date!\n",
+            "[nltk_data] Downloading package averaged_perceptron_tagger to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Package averaged_perceptron_tagger is already up-to-\n",
+            "[nltk_data]       date!\n",
+            "[nltk_data] Downloading package maxent_ne_chunker to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Package maxent_ne_chunker is already up-to-date!\n",
+            "[nltk_data] Downloading package words to /root/nltk_data...\n",
+            "[nltk_data]   Package words is already up-to-date!\n"
+          ]
+        }
+      ],
+      "source": [
+        "import nltk\n",
+        "import numpy\n",
+        "\n",
+        "# word_toknizeを利用するためのモジュール\n",
+        "nltk.download('punkt')\n",
+        "# pos_tagを利用するためのモジュール\n",
+        "nltk.download('averaged_perceptron_tagger')\n",
+        "# chunkを利用するためのモジュール\n",
+        "nltk.download('maxent_ne_chunker')\n",
+        "nltk.download('words')\n",
+        "\n",
+        "#regex\n",
+        "from nltk.corpus import state_union\n",
+        "from nltk.tokenize import PunktSentenceTokenizer\n",
+        "from nltk import ne_chunk\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def isCoordinate (sentence):\n",
+        "    tokens = nltk.word_tokenize(sentence)\n",
+        "    tagged = nltk.pos_tag(tokens)\n",
+        "    entities = nltk.chunk.ne_chunk(tagged)\n",
+        "    #print(entities)\n",
+        "    #print(type(entities))\n",
+        "    grammar = \"CO: {<NN|JJ><,><JJ>}\"\n",
+        "    cp = nltk.RegexpParser(grammar)\n",
+        "    result = cp.parse(entities)\n",
+        "    for subtree in result.subtrees():\n",
+        "      print(subtree)\n",
+        "\n",
+        "\n",
+        "cordinateAdjeSentence = \"I got married on a beautiful, sunny day.\"\n",
+        "\n",
+        "isCoordinate(cordinateAdjeSentence)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "1TrxWJhhJnDn",
+        "outputId": "1043dcbc-2371-48a0-c5f1-d37ded118fdc"
+      },
+      "execution_count": 58,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "(S\n",
+            "  I/PRP\n",
+            "  got/VBD\n",
+            "  married/VBN\n",
+            "  on/IN\n",
+            "  a/DT\n",
+            "  (CO beautiful/NN ,/, sunny/JJ)\n",
+            "  day/NN\n",
+            "  ./.)\n",
+            "(CO beautiful/NN ,/, sunny/JJ)\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
