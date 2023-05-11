@@ -2,9 +2,9 @@
 
 Team I
 
-Unit9 coordinate vs. non-coordinate adjectives (e.g. quick, lazy fox vs. quick lazy fox)
-
-1. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/matumoto1234/AuthorshipAnalysis/blob/main/isCoordinateAdjective)
+今回のタスク 5/14 23:59 〆切<br>
+tensed verbs vs. modalized verbs (e.g. The police found it. vs. The police may have found it.)<br>
+作業ディレクトリ `unit06/ex02/classfy_verbs.py`<br>
 
 ## License
 
