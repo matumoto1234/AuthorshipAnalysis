@@ -1,6 +1,10 @@
+from main import extract_authors, make_author_to_texts
 from enum import Enum
 import matplotlib.pyplot as plt
 import nltk
+import functools
+nltk.download('punkt', quiet=True)
+
 
 # count_coordinate_adjectives(sentence: str) : count coordinate adjectives in sentence
 #   sentenceを品詞に置き換えて、["JJ", ",", "JJ"] となっている箇所を数える
@@ -71,21 +75,52 @@ def adjective_analysis(
     female_authors: list[str],
     author_to_texts: dict[str, list[list[str]]]
 ):
-    male_coordinate = count_coordinate_adjectives(male_authors)
-    female_coordinate = count_coordinate_adjectives(female_authors)
+    male_coordinate_sum = 0
 
-    male_non_coordinate = count_non_coordinate_adjectives(male_authors)
-    female_non_coordinat = count_non_coordinate_adjectives(female_authors)
+    for male_author in male_authors:
+        for texts in author_to_texts[male_author]:
+            for text in texts:
+                male_coordinate = count_coordinate_adjectives(text)
+                male_coordinate_sum += male_coordinate
+
+    female_coordinate_sum = 0
+
+    for female_author in female_authors:
+        for texts in author_to_texts[female_author]:
+            for text in texts:
+                female_coordinate = count_coordinate_adjectives(text)
+                female_coordinate_sum += female_coordinate
+
+    male_non_coordinate_sum = 0
+
+    for male_author in male_authors:
+        for texts in author_to_texts[male_author]:
+            for text in texts:
+                male_non_coordinate = count_non_coordinate_adjectives(text)
+                male_non_coordinate_sum += male_non_coordinate
+
+    female_non_coordinate_sum = 0
+
+    for female_author in female_authors:
+        for texts in author_to_texts[female_author]:
+            for text in texts:
+                female_non_coordinate = count_non_coordinate_adjectives(text)
+                female_non_coordinate_sum += female_non_coordinate
 
     plt.bar(
-        list(['male', 'female']),
         list([
-            male_coordinate / male_non_coordinate,
-            female_coordinate / female_non_coordinat
+            'male coordinate adjectives',
+            'male non-coordinate adjectives',
+            'female coordinate adjectives',
+            'female non-coordinate adjectives',
+        ]),
+        list([
+            male_coordinate_sum,
+            male_non_coordinate_sum,
+            female_coordinate_sum,
+            female_non_coordinate_sum,
         ]),
     )
-
-    plt.ylim(0, 100)
 
     plt.xlabel("male and female")
     plt.ylabel("type token ratio [%]")
@@ -94,37 +129,15 @@ def adjective_analysis(
 
 
 def _test():
-    # テストを用意して、正確性を確認する
-    coordinate_sentences: list[str] = [
-        "Forecasters warned of another day of hot, windy conditions across Southern California on Sunday.",
-        "n addition, their breathtakingly cruel, callous actions also led to a tribute plaque.",
-        "Obama stands accused of giving stuffy, cliche-ridden graduation speeches.",
-        "The company is also working on a new, cheaper iPhone.",
-        "I have a new, expensive car.",
-        "The girl is beautiful, smart, and funny.",
-    ]
+    import pandas
 
-    non_coordinate_sentences: list[str] = [
-        "Amazon prepping multiple wallet-friendly tablets.",
-        "With this in mind, I wanted to design a screen to identify dirt-cheap smaller companies.",
-        "The Red Wings are demonstrably a tough hockey team.",
-        "I saw a happy little kid in the park.",
-        "We ate a delicious deer meat."
-        "My friend buys a expensive red car."
-    ]
+    csv = pandas.read_csv('~/Downloads/blogtext.csv', nrows=1000)
 
-    correct = 0
-    for sentence in coordinate_sentences:
-        if classify_adjective(sentence) == AdjectiveCategory.COORDINATE:
-            correct += 1
+    male_authors = extract_authors(csv, 'male')
+    female_authors = extract_authors(csv, 'female')
+    author_to_texts = make_author_to_texts(csv)
 
-    for sentence in non_coordinate_sentences:
-        if classify_adjective(sentence) == AdjectiveCategory.NON_COORDINATE:
-            correct += 1
-
-    all_size = len(coordinate_sentences) + len(non_coordinate_sentences)
-    print("all test case size :", all_size)
-    print("classification accuracy :", correct / all_size * 100, "%")
+    adjective_analysis(male_authors, female_authors, author_to_texts)
 
 
 if __name__ == '__main__':
