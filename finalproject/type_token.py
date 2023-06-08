@@ -14,6 +14,7 @@ def _count_type(text: str) -> tuple[int, int]:
 
 def type_token_ratio(text: str) -> float:
     token_count = count_token(text)
+
     if token_count == 0:
         return 0
 

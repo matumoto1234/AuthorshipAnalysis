@@ -8,6 +8,11 @@ def _count_conjunction(text: str) -> tuple[int, int]:
 
 
 def conjunction_token_ratio(text: str):
+    token_count = count_token(text)
+
+    if token_count == 0:
+        return 0
+
     return (_count_conjunction(text) / count_token(text)) * 100
 
 

@@ -9,6 +9,7 @@ from tensed_modalized_verb_ratio import *
 from to import *
 from type_token import *
 from verb import *
+from plot import *
 
 
 MALE = "male"
@@ -79,6 +80,9 @@ def main():
             correct_count += 1
 
     print(f"accuracy : {correct_count / len(text_and_gender_list) * 100} [%]")
+
+    # plot(xlabel="", ylabel="", ylim=100, title="", bars=training_result)
+    plot_multi(xlabel="", ylabel="", ylim=100, title="", hoge=training_result)
 
     return
 
