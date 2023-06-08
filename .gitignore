@@ -1,3 +1,5 @@
 archive.zip
 .vscode/
 __pycache__/
+blogtext.csv
+.DS_Store
